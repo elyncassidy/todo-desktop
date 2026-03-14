@@ -45,57 +45,66 @@ app.whenReady().then(() => {
 
   createWindow()
 
-  // -----------------------------
-  // AUTO UPDATE CONFIGURATION
-  // -----------------------------
+ // -----------------------------
+// AUTO UPDATE CONFIGURATION
+// -----------------------------
 
-  autoUpdater.logger = log
-  autoUpdater.logger.transports.file.level = 'info'
+autoUpdater.logger = log
+log.transports.file.level = 'info'
 
-  autoUpdater.on('checking-for-update', () => {
-    console.log('checking')
+// show log file location
+log.info('Log file location:', log.transports.file.getFile().path)
+
+log.info('[AutoUpdater] App version:', app.getVersion())
+log.info('[AutoUpdater] Is dev mode:', is.dev)
+
+autoUpdater.on('checking-for-update', () => {
+  log.info('[AutoUpdater] Checking for update...')
+})
+
+autoUpdater.on('update-available', (info) => {
+  log.info('[AutoUpdater] Update available:', info.version)
+
+  dialog.showMessageBox({
+    type: 'info',
+    title: 'Update Available',
+    message: `Version ${info.version} is available. Downloading now...`
   })
+})
 
-  autoUpdater.on('update-available', () => {
-    console.log('update available')
-    dialog.showMessageBox({
-      type: 'info',
-      title: 'Update Available',
-      message: 'A new version of Todo Desktop is available. Downloading now.'
-    })
+autoUpdater.on('update-not-available', (info) => {
+  log.info('[AutoUpdater] No update available. Latest version:', info.version)
+})
+
+autoUpdater.on('error', (err) => {
+  log.error('[AutoUpdater] Error occurred:', err)
+})
+
+autoUpdater.on('download-progress', (progress) => {
+  log.info(
+    `[AutoUpdater] Download speed: ${progress.bytesPerSecond} - Downloaded ${progress.percent}%`
+  )
+})
+
+autoUpdater.on('update-downloaded', (info) => {
+  log.info('[AutoUpdater] Update downloaded:', info.version)
+
+  dialog.showMessageBox({
+    type: 'info',
+    title: 'Update Ready',
+    message: 'Update downloaded. The application will restart to install the update.'
+  }).then(() => {
+    autoUpdater.quitAndInstall()
   })
+})
 
-  autoUpdater.on('update-not-available', () => {
-    console.log('no update')
-  })
+// delay update check to allow app startup
+setTimeout(() => {
+  log.info('[AutoUpdater] Starting update check...')
+  autoUpdater.checkForUpdatesAndNotify()
+}, 5000)
 
-  autoUpdater.on('error', (e) => {
-    console.log('error', e)
-  })
-
-  autoUpdater.on('update-downloaded', () => {
-    console.log('Update downloaded')
-
-    dialog.showMessageBox({
-      type: 'info',
-      title: 'Update Ready',
-      message: 'Update downloaded. The application will restart to install the update.'
-    }).then(() => {
-      autoUpdater.quitAndInstall()
-    })
-  })
-
-  // wait 5 seconds before checking
-  console.log('[AutoUpdater] App version:', app.getVersion())
-  console.log('[AutoUpdater] Is dev?', is.dev)
-  console.log('[AutoUpdater] Will check in 5 seconds...')
-  
-  setTimeout(() => {
-    console.log('[AutoUpdater] Checking for updates now...')
-    autoUpdater.checkForUpdates()
-  }, 5000)
-
-  // -----------------------------
+// -----------------------------
 
   app.on('activate', function () {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
