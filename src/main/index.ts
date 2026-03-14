@@ -53,11 +53,11 @@ app.whenReady().then(() => {
   autoUpdater.logger.transports.file.level = 'info'
 
   autoUpdater.on('checking-for-update', () => {
-    console.log('Checking for update...')
+    console.log('checking')
   })
 
   autoUpdater.on('update-available', () => {
-    console.log('Update available')
+    console.log('update available')
     dialog.showMessageBox({
       type: 'info',
       title: 'Update Available',
@@ -66,11 +66,11 @@ app.whenReady().then(() => {
   })
 
   autoUpdater.on('update-not-available', () => {
-    console.log('No updates available')
+    console.log('no update')
   })
 
-  autoUpdater.on('error', (err) => {
-    console.log('Update error:', err)
+  autoUpdater.on('error', (e) => {
+    console.log('error', e)
   })
 
   autoUpdater.on('update-downloaded', () => {
