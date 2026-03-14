@@ -26,3 +26,8 @@ nsis:
 msi:
   oneClick: false
   perMachine: false
+
+publish:
+  provider: github
+  owner: elyncassidy
+  repo: todo-desktop

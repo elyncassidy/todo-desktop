@@ -103,7 +103,7 @@ function App(): JSX.Element {
       <div className="app">
         <header className="app-header">
           <div className="header-content">
-            <h1>✓ Task Master</h1>
+            <h1>✓ Task Master 1.1.0</h1>
             <p>Today: {format(new Date(), "PPP")}</p>
             <p className="subtitle">Stay organized, get things done</p>
           </div>
