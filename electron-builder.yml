@@ -1,0 +1,28 @@
+appId: com.el.tododesktop
+productName: Todo Desktop
+copyright: "Copyright 2026"
+
+directories:
+  output: dist-packages
+
+files:
+  - out/**/*
+
+win:
+  icon: resources/icon.png
+  target:
+    - target: nsis
+      arch: [x64]
+    - target: msi
+      arch: [x64]
+
+nsis:
+  oneClick: false
+  allowToChangeInstallationDirectory: true
+  createDesktopShortcut: true
+  createStartMenuShortcut: true
+  shortcutName: "Todo Desktop"
+
+msi:
+  oneClick: false
+  perMachine: false
