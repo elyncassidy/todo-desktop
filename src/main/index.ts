@@ -48,7 +48,7 @@ app.whenReady().then(() => {
 
   createWindow()
 
- // -----------------------------
+// -----------------------------
 // AUTO UPDATE CONFIGURATION
 // -----------------------------
 
@@ -61,6 +61,9 @@ log.info('Log file location:', log.transports.file.getFile().path)
 log.info('[AutoUpdater] App version:', app.getVersion())
 log.info('[AutoUpdater] Is dev mode:', is.dev)
 
+// show which update server is used
+log.info('[AutoUpdater] Feed URL:', autoUpdater.getFeedURL())
+
 autoUpdater.on('checking-for-update', () => {
   log.info('[AutoUpdater] Checking for update...')
 })
@@ -71,7 +74,7 @@ autoUpdater.on('update-available', (info) => {
   dialog.showMessageBox({
     type: 'info',
     title: 'Update Available',
-    message: `Version ${info.version} is available. Downloading now...`
+    message: `Version ${info.version} is available. The update will now download.`
   })
 })
 
@@ -85,27 +88,32 @@ autoUpdater.on('error', (err) => {
 
 autoUpdater.on('download-progress', (progress) => {
   log.info(
-    `[AutoUpdater] Download speed: ${progress.bytesPerSecond} - Downloaded ${progress.percent}%`
+    `[AutoUpdater] Download speed: ${progress.bytesPerSecond} - ${progress.percent.toFixed(
+      2
+    )}% downloaded`
   )
 })
 
 autoUpdater.on('update-downloaded', (info) => {
   log.info('[AutoUpdater] Update downloaded:', info.version)
 
-  dialog.showMessageBox({
-    type: 'info',
-    title: 'Update Ready',
-    message: 'Update downloaded. The application will restart to install the update.'
-  }).then(() => {
-    autoUpdater.quitAndInstall()
-  })
+  dialog
+    .showMessageBox({
+      type: 'info',
+      title: 'Update Ready',
+      message:
+        'Update downloaded successfully. The application will restart to install the update.'
+    })
+    .then(() => {
+      autoUpdater.quitAndInstall()
+    })
 })
 
-// delay update check to allow app startup
+// force update check after startup (good for assignment demo)
 setTimeout(() => {
   log.info('[AutoUpdater] Starting update check...')
   autoUpdater.checkForUpdatesAndNotify()
-}, 5000)
+}, 3000)
 
 // -----------------------------
 
