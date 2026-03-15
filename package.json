@@ -4,8 +4,9 @@
   "productName": "Todo Desktop",
   "description": "An Electron application with React and TypeScript",
   "main": "./out/main/index.js",
-  "author": "example.com",
-  "homepage": "https://electron-vite.org",
+  "author": "elyncassidy",
+  "homepage": "https://github.com/elyncassidy/todo-desktop",
+
   "scripts": {
     "dev": "electron-vite dev",
     "build": "electron-vite build",
@@ -13,6 +14,7 @@
     "package:win": "npm run build && electron-builder --win",
     "package:mac": "npm run build && electron-builder --mac"
   },
+
   "dependencies": {
     "@electron-toolkit/preload": "^3.0.2",
     "@electron-toolkit/utils": "^4.0.0",
@@ -20,6 +22,7 @@
     "electron-log": "^5.4.3",
     "electron-updater": "^6.8.3"
   },
+
   "devDependencies": {
     "@electron-toolkit/eslint-config-prettier": "^3.0.0",
     "@electron-toolkit/eslint-config-ts": "^3.1.0",
@@ -40,5 +43,36 @@
     "react-dom": "^19.2.1",
     "typescript": "^5.9.3",
     "vite": "^7.2.6"
+  },
+
+  "build": {
+    "appId": "com.todo.desktop",
+    "productName": "Todo Desktop",
+
+    "directories": {
+      "output": "dist-packages"
+    },
+
+    "files": [
+      "out/**/*",
+      "package.json"
+    ],
+
+    "win": {
+      "target": "nsis"
+    },
+
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true
+    },
+
+    "publish": [
+      {
+        "provider": "github",
+        "owner": "elyncassidy",
+        "repo": "todo-desktop"
+      }
+    ]
   }
 }
